@@ -1,8 +1,17 @@
 import os
+import shutil
 
 
 def move_file(command: str) -> None:
-    _, source_file, destination = command.split()
+    parts = command.split()
+
+    if len(parts) != 3:
+        raise ValueError
+
+    if parts[0] != "mv":
+        raise ValueError
+
+    _, source_file, destination = parts
 
     destination_file = destination
 
@@ -12,16 +21,14 @@ def move_file(command: str) -> None:
     destination_dir = os.path.dirname(destination_file)
 
     if destination_dir:
-        curren_path = ""
+        current_path = ""
         for part in destination_dir.split("/"):
-            curren_path = os.path.join(curren_path,
-                                       part) if curren_path else part
+            current_path = os.path.join(current_path,
+                                       part) if current_path else part
 
-            if not os.path.exists(curren_path):
-                os.mkdir(curren_path)
+            if not os.path.exists(current_path):
+                os.mkdir(current_path)
 
-    with open(source_file, "r") as file_in, open(destination_file,
-                                                 "w") as file_out:
-        file_out.write(file_in.read())
+    shutil.copy2(source_file, destination_file)
 
     os.remove(source_file)
