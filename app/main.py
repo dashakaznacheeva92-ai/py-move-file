@@ -24,7 +24,7 @@ def move_file(command: str) -> None:
         current_path = ""
         for part in destination_dir.split("/"):
             current_path = os.path.join(current_path,
-                                       part) if current_path else part
+                                        part) if current_path else part
 
             if not os.path.exists(current_path):
                 os.mkdir(current_path)
